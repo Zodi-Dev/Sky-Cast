@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Atmos Weather</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-weather="default">
+    <div class="animated-sky" aria-hidden="true">
+      <span class="sky-orbit orbit-one"></span>
+      <span class="sky-orbit orbit-two"></span>
+      <span class="sky-rain rain-a"></span>
+      <span class="sky-rain rain-b"></span>
+      <span class="sky-rain rain-c"></span>
+    </div>
+
+    <main class="app">
+      <section class="shell">
+        <nav class="topbar" aria-label="Weather controls">
+          <div class="brand"><span></span>Atmos</div>
+          <div class="header-actions">
+            <button
+              id="favoriteToggle"
+              class="tool-btn"
+              type="button"
+              title="Save or remove this location"
+              aria-label="Save or remove this location"
+            >
+              ☆
+            </button>
+            <button
+              id="locationBtn"
+              class="tool-btn"
+              type="button"
+              title="Use current location"
+              aria-label="Use current location"
+            >
+              ⌖
+            </button>
+            <div class="units" aria-label="Temperature unit">
+              <button
+                class="unit active"
+                data-unit="celsius"
+                type="button"
+                title="Show Celsius"
+              >
+                C
+              </button>
+              <button
+                class="unit"
+                data-unit="fahrenheit"
+                type="button"
+                title="Show Fahrenheit"
+              >
+                F
+              </button>
+            </div>
+          </div>
+        </nav>
+
+        <form class="search" id="searchForm">
+          <div class="search-box">
+            <input
+              id="cityInput"
+              type="search"
+              placeholder="Search city, district, or town"
+              autocomplete="off"
+              aria-autocomplete="list"
+              aria-controls="suggestions"
+            />
+            <div id="suggestions" class="suggestions" role="listbox"></div>
+          </div>
+          <button class="search-btn" type="submit" title="Search weather">
+            Search
+          </button>
+        </form>
+
+        <p class="status" id="statusLine">Loading weather...</p>
+
+        <section class="bento">
+          <article class="glass-card current-card reveal">
+            <div class="current-copy">
+              <p class="label" id="localTime">Local weather</p>
+              <h1 id="placeName">--</h1>
+              <p class="condition" id="conditionText">--</p>
+            </div>
+
+            <div class="weather-art" id="weatherArt" aria-hidden="true">
+              <span class="sun"></span>
+              <span class="cloud a"></span>
+              <span class="cloud b"></span>
+              <span class="bolt"></span>
+              <span class="drop d1"></span>
+              <span class="drop d2"></span>
+              <span class="drop d3"></span>
+            </div>
+
+            <div class="temp-line">
+              <strong id="temperature">--</strong>
+              <span id="degreeSymbol">C</span>
+            </div>
+          </article>
+
+          <article class="glass-card range-card reveal">
+            <p class="label">Today range</p>
+            <strong id="todayRange">--</strong>
+            <span id="rainChance">Rain chance --</span>
+          </article>
+
+          <article class="glass-card sun-card reveal">
+            <p class="label">Sun cycle</p>
+            <div><span>Sunrise</span><strong id="sunrise">--</strong></div>
+            <div><span>Sunset</span><strong id="sunset">--</strong></div>
+          </article>
+
+          <article class="glass-card metric-card reveal">
+            <span>Feels like</span><strong id="feelsLike">--</strong>
+          </article>
+          <article class="glass-card metric-card reveal">
+            <span>Humidity</span><strong id="humidity">--</strong>
+          </article>
+          <article class="glass-card metric-card reveal">
+            <span>Wind</span><strong id="windSpeed">--</strong>
+          </article>
+          <article class="glass-card metric-card reveal">
+            <span>Pressure</span><strong id="pressure">--</strong>
+          </article>
+          <article class="glass-card metric-card reveal">
+            <span>UV index</span><strong id="uvIndex">--</strong>
+          </article>
+          <article class="glass-card metric-card reveal">
+            <span>Cloud cover</span><strong id="cloudCover">--</strong>
+          </article>
+          <article class="glass-card metric-card reveal">
+            <span>Precipitation</span><strong id="precipitation">--</strong>
+          </article>
+          <article class="glass-card metric-card reveal">
+            <span>Visibility</span><strong id="visibility">--</strong>
+          </article>
+
+          <aside class="glass-card list-card reveal">
+            <div class="list-head">
+              <h2>Favorites</h2>
+              <button
+                id="clearFavorites"
+                type="button"
+                title="Remove all favorite locations"
+              >
+                Clear
+              </button>
+            </div>
+            <div class="chips" id="favoritesList"></div>
+          </aside>
+
+          <aside class="glass-card list-card reveal">
+            <div class="list-head">
+              <h2>Recent</h2>
+              <button
+                id="clearRecent"
+                type="button"
+                title="Clear recent searches"
+              >
+                Clear
+              </button>
+            </div>
+            <div class="chips" id="recentList"></div>
+          </aside>
+        </section>
+      </section>
+
+      <section class="forecast glass-card reveal">
+        <div class="forecast-head">
+          <div>
+            <p class="label">Forecast</p>
+            <h2>24-hour and 7-day outlook</h2>
+          </div>
+          <div class="tabs" role="tablist" aria-label="Forecast view">
+            <button
+              class="tab active"
+              data-view="hourly"
+              id="hourlyTab"
+              type="button"
+              role="tab"
+              title="Show next 24 hours"
+            >
+              24 hours
+            </button>
+            <button
+              class="tab"
+              data-view="daily"
+              id="dailyTab"
+              type="button"
+              role="tab"
+              title="Show next 7 days"
+            >
+              7 days
+            </button>
+          </div>
+        </div>
+        <div class="forecast-grid" id="hourlyForecast"></div>
+        <div class="forecast-grid hidden" id="dailyForecast"></div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
